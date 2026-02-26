@@ -1,14 +1,36 @@
 .nav {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  flex-wrap:wrap ;
   padding: 1rem;
-  position: sticky;
   top: 0;
-  background-color: rgb(140, 209, 209);
-  color: black;
+  background-color: #ee4b4bd6;
+  color: rgb(254, 248, 248);
   z-index: 1000;
+  height: 67px;
+}
+.nav h2 {
+  font-size: 25px;
+  letter-spacing: 2px;
+  padding-left: 1%;
 }
 .links {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
+  flex: 1;
+  padding-right: 2%;
+}
+.links a {
+  color: aliceblue;
+  padding-left: 2%;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+.icons{
+gap: 10px;
+padding-right: 1%;
+align-items: center;
+display: flex;
 }
