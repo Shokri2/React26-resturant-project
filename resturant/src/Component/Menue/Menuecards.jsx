@@ -37,13 +37,14 @@ function Menuecards({ name, descraption, image, quantity, price }) {
         <Box
           sx={{
             width: 400,
-            margin: "400px",
+            margin: "150px auto",
             padding: "70px",
             bgcolor: "white",
             border: "2px solid #000",
             boxShadow: 24,
             borderRadius: "20px",
             alignItems: "center",
+            textAlign:"center",
           }}
         >
           <Typography variant="h6" align="center">
@@ -59,7 +60,7 @@ function Menuecards({ name, descraption, image, quantity, price }) {
           <Typography variant="body1" align="center">
             <Button>+</Button> quantity: {quantity} <Button>-</Button>
           </Typography>
-          <Button sx={{ textAlign: "center" }} onClick={handleClose}>
+          <Button sx={{ textAlign:"center" }} onClick={handleClose}>
             {" "}
             Done!
           </Button>
