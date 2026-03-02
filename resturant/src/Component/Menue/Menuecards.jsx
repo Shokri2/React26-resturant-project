@@ -9,8 +9,14 @@ import {
   Modal,
 } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 // child component its always child
 function Menuecards({ name, descraption, image, quantity, price }) {
+  const navigate = useNavigate();
+  const handleView = () => {
+    navigate("/view-details", { state: { name, descraption, image } });
+  };
   const [open, setOpen] = useState(false);
   const handleopen = () => {
     setOpen(true);
@@ -18,6 +24,7 @@ function Menuecards({ name, descraption, image, quantity, price }) {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <>
       <Card sx={{ maxWidth: 345 }}>
@@ -30,7 +37,9 @@ function Menuecards({ name, descraption, image, quantity, price }) {
           <Button size="small" onClick={handleopen}>
             add to cart
           </Button>
-          <Button size="small">view</Button>
+          <Button size="small" onClick={handleView}>
+            view
+          </Button>
         </CardActions>
       </Card>
       <Modal open={open} onClose={handleClose}>
@@ -44,7 +53,7 @@ function Menuecards({ name, descraption, image, quantity, price }) {
             boxShadow: 24,
             borderRadius: "20px",
             alignItems: "center",
-            textAlign:"center",
+            textAlign: "center",
           }}
         >
           <Typography variant="h6" align="center">
@@ -60,7 +69,7 @@ function Menuecards({ name, descraption, image, quantity, price }) {
           <Typography variant="body1" align="center">
             <Button>+</Button> quantity: {quantity} <Button>-</Button>
           </Typography>
-          <Button sx={{ textAlign:"center" }} onClick={handleClose}>
+          <Button sx={{ textAlign: "center" }} onClick={handleClose}>
             {" "}
             Done!
           </Button>
