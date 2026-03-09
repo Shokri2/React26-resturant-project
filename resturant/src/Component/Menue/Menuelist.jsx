@@ -56,7 +56,7 @@ function Menuelist() {
         <Grid container spacing={12}>
           {piza.map((pizza) => {
             return (
-              <Grid item xs={12} sm={6} md={5} key={pizza.id}>
+              <Grid item key={pizza.id}>
                 <Menuecards
                   name={pizza.name}
                   descraption={pizza.descraption}

@@ -1,53 +1,114 @@
-import React from "react";
-import "./Navbar.css";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import Theme from "../../Theme/Theme.jsx";
+import { UserContext } from "../../Context/UserContext.jsx";
+
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+} from "@mui/material";
+
 function Navbar() {
+  const { logout, user } = useContext(UserContext);
+  console.log(user);
+  const role = user?.role;
+  const currentrUsers = localStorage.getItem("currentrUsers");
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
-    <>
-      <nav className="nav">
-        <h2>SteakHouse</h2>
-        <div className="links">
-          <a href="">Home</a>
-          <a href="">About</a>
-          <a href="">Service</a>
-          <a href="">Menue</a>
-          <button onClick={() => navigate("/register")}>signin</button>
-        </div>
-        <div className="icons">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            fill="currentColor"
-            class="bi bi-cart2"
-            viewBox="0 0 16 16"
+    <AppBar
+      position="sticky"
+      sx={{
+        bgcolor: "white",
+        color: "black",
+        width: "100%",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 5,
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              cursor: "pointer",
+              letterSpacing: 1,
+            }}
+            onClick={() => navigate("/")}
           >
-            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="25"
-            fill="currentColor"
-            class="bi bi-search"
-            viewBox="0 0 16 16"
+            🍕 Pizza
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              color: "#000",
+            }}
           >
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="25"
-            fill="currentColor"
-            class="bi bi-share"
-            viewBox="0 0 16 16"
-          >
-            <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" />
-          </svg>
-        </div>
-      </nav>
-    </>
+            <Button onClick={() => navigate("/")}>Home</Button>
+
+            <Button>Gallery</Button>
+
+            <Button>Contact</Button>
+
+            {role === "admin" ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate("/admin/manage-menu")}
+              >
+                Manage Menu
+              </Button>
+            ) : (
+              <Button>Menu</Button>
+            )}
+
+            {currentrUsers ? (
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: "white",
+                }}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button onClick={() => navigate("/register")}>Register</Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </Button>
+              </>
+            )}
+
+            <Theme />
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
+
 export default Navbar;
