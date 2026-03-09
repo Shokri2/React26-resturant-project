@@ -2,11 +2,19 @@ import { useState, createContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
+ Admin-Dashboard
 //login, register, logout
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   //get current user from local storage when app load
+
+
+// login, regester, logout
+export const CartProvider = ({ Children }) => {
+  const [cart, setCart] = useState(null);
+  const navegate =useNavigate();
+ main
   useEffect(() => {
     const storedUser = localStorage.getItem("currentrUsers");
     if (storedUser) {
@@ -32,6 +40,7 @@ export const UserProvider = ({ children }) => {
       toast.error("Email already exist, please login");
       return;
     }
+ Admin-Dashboard
     //create new user
     const newUser = { id: Date.now(), name, email, password, role };
     //add user to users - save user
@@ -40,6 +49,13 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem("users", JSON.stringify(updatedUsers));
     toast.success("Register successful. try login");
     navigate("/login");
+
+    const newUser = { id: Date.now() ,name, email, passpword, role };
+    const updateUsers ={...users,newUser}
+    localStorage.setItem("users", JSON.stringify(updateUsers));
+    toast.success("register successful try login");
+    navegate("/admin/dashboard");
+ main
     return true;
   };
 
