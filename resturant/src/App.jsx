@@ -4,13 +4,15 @@ import { Route, Routes } from "react-router-dom";
 import Toaster from "react-hot-toast"
 import Viewitem from "./Component/Menue/Viewitem.jsx";
 import Register from "./Component/Auth/Register.jsx";
+ import AdminDashboard from "./Pages/Admin/AdminDashboard.jsx";
 function App() {
   return (
     <>
-    <Toaster position="top-center" />
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/view-details" element={<Viewitem />} />
+        <Route path="/Admin/dashboard" element={<AdminDashboard />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </>

@@ -1,11 +1,12 @@
 import { useState, createContext, useEffect } from "react";
 import toast from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
 // login, regester, logout
 export const CartProvider = ({ Children }) => {
   const [cart, setCart] = useState(null);
+  const navegate =useNavigate();
   useEffect(() => {
     const storedUser = localStorage.getItem("currentusers");
 
@@ -35,6 +36,7 @@ export const CartProvider = ({ Children }) => {
     const updateUsers ={...users,newUser}
     localStorage.setItem("users", JSON.stringify(updateUsers));
     toast.success("register successful try login");
+    navegate("/admin/dashboard");
     return true;
   };
 const login =( email, passpword) =>{
