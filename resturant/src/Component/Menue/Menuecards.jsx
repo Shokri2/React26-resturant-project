@@ -10,20 +10,27 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../../Context/CartContext.jsx";
+import { useContext } from "react";
+//child component its always child
 
-// child component its always child
-function Menuecards({ name, descraption, image, quantity, price }) {
+function Menuecards({ id, name, descraption, image, quantity, price }) {
+  const item = { id, name, descriptioon, image, price, quantity };
+  console.log(item);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const { cart, addToCart } = useContext(CartContext);
   const handleView = () => {
     navigate("/view-details", { state: { name, descraption, image } });
   };
-  const [open, setOpen] = useState(false);
+
   const handleopen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+  const cartItem = cart.find((item) => item.id === id);
 
   return (
     <>
@@ -67,7 +74,8 @@ function Menuecards({ name, descraption, image, quantity, price }) {
           </Typography>
 
           <Typography variant="body1" align="center">
-            <Button>+</Button> quantity: {quantity} <Button>-</Button>
+            <Button onClick={() => addToCart(item)}>+</Button> quantity:{" "}
+            {quantity} <Button>-</Button>
           </Typography>
           <Button sx={{ textAlign: "center" }} onClick={handleClose}>
             {" "}
@@ -79,4 +87,5 @@ function Menuecards({ name, descraption, image, quantity, price }) {
   );
 }
 export default Menuecards;
-// props
+//props passing from parent to child
+//task: increase decrease the quantity
