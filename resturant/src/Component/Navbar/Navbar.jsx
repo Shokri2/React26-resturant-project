@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Theme from "../../Theme/Theme.jsx";
 import { UserContext } from "../../Context/UserContext.jsx";
-
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -10,14 +10,19 @@ import {
   Typography,
   Button,
   Container,
+  Drawer,
+  IconButton,
+  Divider,
 } from "@mui/material";
+
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Navbar() {
   const { logout, user } = useContext(UserContext);
-  console.log(user);
-  const role = user?.role;
-  const currentrUsers = localStorage.getItem("currentrUsers");
   const navigate = useNavigate();
+
+  const role = user?.role;
+  const [open, setOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -25,89 +30,129 @@ function Navbar() {
   };
 
   return (
-    <AppBar
-      position="sticky"
-      sx={{
-        bgcolor: "white",
-        color: "black",
-        width: "100%",
-      }}
-    >
-      <Container maxWidth="xl">
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 5,
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              cursor: "pointer",
-              letterSpacing: 1,
-            }}
-            onClick={() => navigate("/")}
-          >
-            🍕 Pizza
-          </Typography>
-
-          <Box
+    <>
+      <AppBar
+        position="sticky"
+        sx={{
+          bgcolor: "rgba(233, 230, 230, 0.77)",
+          backdropFilter: "blur(10px)",
+          color: "#000",
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar
             sx={{
               display: "flex",
-              gap: 2,
+              justifyContent: "space-between",
               alignItems: "center",
-              color: "#000",
             }}
           >
-            <Button onClick={() => navigate("/")}>Home</Button>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            >
+              Steak House
+            </Typography>
 
-            <Button>Gallery</Button>
+            <Box sx={{ display: { xs: "none", md: "flex" },  gap: 3, ml: -9 }}>
+              <Button
+                onClick={() => navigate("/")}
+                sx={{
+                  color: "#333",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                }}
+              >
+                Home
+              </Button>
+              <Button
+                onClick={() => navigate("/reservations ")}
+                sx={{
+                  color: "#333",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                }}
+              >
+                Reservations
+              </Button>
+              <Button
+                onClick={() => navigate("/contact")}
+                sx={{
+                  color: "#333",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                }}
+              >
+                Contact
+              </Button>
 
-            <Button>Contact</Button>
+              {role === "admin" ? (
+                <Button onClick={() => navigate("/admin/manage-menu")}>
+                  Manage Menu
+                </Button>
+              ) : (
+                <Button onClick={() => navigate("/menu")}>Menu</Button>
+              )}
+            </Box>
 
-            {role === "admin" ? (
+            <IconButton onClick={() => setOpen(true)}>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+        <Box
+          sx={{
+            width: 250,
+            p: 3,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Typography variant="h6">Account</Typography>
+
+          {user ? (
+            <Button variant="contained" color="error" onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <>
               <Button
                 variant="contained"
-                color="secondary"
-                onClick={() => navigate("/admin/manage-menu")}
+                onClick={() => {
+                  navigate("/login");
+                  setOpen(false);
+                }}
               >
-                Manage Menu
+                Login
               </Button>
-            ) : (
-              <Button>Menu</Button>
-            )}
 
-            {currentrUsers ? (
               <Button
                 variant="outlined"
-                sx={{
-                  borderColor: "white",
+                onClick={() => {
+                  navigate("/register");
+                  setOpen(false);
                 }}
-                onClick={handleLogout}
               >
-                Logout
+                Register
               </Button>
-            ) : (
-              <>
-                <Button onClick={() => navigate("/register")}>Register</Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
-              </>
-            )}
+            </>
+          )}
 
-            <Theme />
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+          <Divider sx={{ my: 2 }} />
+
+          <Typography variant="h6">Settings</Typography>
+          <Theme />
+        </Box>
+      </Drawer>
+    </>
   );
 }
 
