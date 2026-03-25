@@ -1,9 +1,9 @@
-import MenuList from "../../Menue/Menulist.jsx";
+import MenueList from "../../Menu/Menuelist.jsx";
 
 function Menu() {
   return (
     <>
-      <MenuList />
+      <MenueList />
     </>
   );
 }
