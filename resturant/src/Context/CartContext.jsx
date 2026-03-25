@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromItem = (item) => {}; //task
+
 
   return (
     <CartContext.Provider
