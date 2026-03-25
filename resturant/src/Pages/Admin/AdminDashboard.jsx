@@ -1,6 +1,10 @@
-import Dashboard from "../../Components/Admin/Dashboard/Dashboard.jsx";
+import Dashboard from "../../Component/Admin/Dashboard/Dashboard.jsx";
 
 function AdminDashboard() {
-  return <Dashboard />;
+  return (
+    <>
+      <Dashboard />
+    </>
+  );
 }
 export default AdminDashboard;

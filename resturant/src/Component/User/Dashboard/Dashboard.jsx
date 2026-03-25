@@ -2,7 +2,7 @@ import { Container, Box } from "@mui/material";
 import Sidebar from "../../Sidebar/Sidebar.jsx";
 import { useState } from "react";
 import About from "../../About/About.jsx";
-import Menu from "../../Menue/Menue.jsx";
+import Menu from "../Menu/Menue.jsx";
 import Navbar from "../../Navbar/Navbar.jsx";
 function Dashboard() {
   const [open, setOpen] = useState(false);

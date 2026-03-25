@@ -15,7 +15,7 @@ import { useContext } from "react";
 //child component its always child
 
 function Menuecards({ id, name, descraption, image, quantity, price }) {
-  const item = { id, name, descriptioon, image, price, quantity };
+  const item = { id, name, descraption, image, price, quantity };
   console.log(item);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -34,17 +34,56 @@ function Menuecards({ id, name, descraption, image, quantity, price }) {
 
   return (
     <>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card
+        sx={{
+          maxWidth: 345,
+          maxWidth: 345,
+          borderRadius: 4,
+          boxShadow: 3,
+          transition: "0.3s",
+          "&:hover": {
+            transform: "scale(1.03)",
+          },
+        }}
+      >
         <CardMedia component="img" image={image} height="182" />
-        <CardContent>
-          <Typography>{name}</Typography>
-          <Typography>{descraption}</Typography>
+        <CardContent sx={{ textAlign: "center" }}>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            {name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {descraption}
+          </Typography>
+          <Typography
+            variant="h6"
+            color="primary"
+            sx={{ mt: 1, fontWeight: "bold" }}
+          >
+            {price}$
+          </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" onClick={handleopen}>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 2,
+            pb: 2,
+          }}
+        >
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleopen}
+            sx={{ borderRadius: 3 }}
+          >
             add to cart
           </Button>
-          <Button size="small" onClick={handleView}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleView}
+            sx={{ borderRadius: 3 }}
+          >
             view
           </Button>
         </CardActions>
@@ -83,6 +122,7 @@ function Menuecards({ id, name, descraption, image, quantity, price }) {
           </Button>
         </Box>
       </Modal>
+     
     </>
   );
 }

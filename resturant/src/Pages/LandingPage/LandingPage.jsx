@@ -3,14 +3,16 @@
 import Navbar from "../../Component/Navbar/Navbar.jsx";
 import Hero from "../../Component/Hero/Hero.jsx";
 import About from "../../Component/About/About.jsx";
-import MenuList from "../../Component/Menue/Menulist.jsx";
+import MenueList from "../../Component/Menu/Menuelist.jsx";
+import Footer from "../../Component/Footer/Footer.jsx";
 function LandingPage() {
   return (
     <>
       <Navbar />
       <Hero />
       <About />
-      <MenuList />
+      <MenueList />
+      <Footer />
     </>
   );
 }
