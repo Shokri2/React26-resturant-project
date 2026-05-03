@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Theme from "../../Theme/Theme.jsx";
 import { UserContext } from "../../Context/UserContext.jsx";
 import { Link } from "react-router-dom";
+import CartIcon from "../../Pages/CartIcon/CartIcon.jsx";
 import {
   AppBar,
   Box,
@@ -55,7 +56,7 @@ function Navbar() {
               Steak House
             </Typography>
 
-            <Box sx={{ display: { xs: "none", md: "flex" },  gap: 3, ml: -9 }}>
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 3, ml: -9 }}>
               <Button
                 onClick={() => navigate("/")}
                 sx={{
@@ -97,6 +98,7 @@ function Navbar() {
               ) : (
                 <Button onClick={() => navigate("/menu")}>Menu</Button>
               )}
+              <CartIcon />
             </Box>
 
             <IconButton onClick={() => setOpen(true)}>
