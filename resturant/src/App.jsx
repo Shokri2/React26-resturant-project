@@ -11,13 +11,14 @@ import MenueManage from "./Component/Admin/Manage/MenuMange.jsx";
 import Contact from "./Pages/Contact/Contact.jsx";
 import Res from "./Pages/Reserv/Res.jsx"; 
 import Menuelist from "./Component/Menu/Menuelist.jsx";
-
+import Cart from "./Pages/Cart/Cart.jsx";
 function App() {
   return (
     <>
       <Toaster position="top-center" />
 
       <Routes>
+        <Route path="/cart" element={<Cart />} />
         <Route path="reservations" element={<Res />} />
         <Route path="menu" element={<Menuelist />} />
         <Route path="/" element={<LandingPage />} />
