@@ -1,5 +1,5 @@
 import { useState, createContext } from "react";
-// 1 === 2 ? "true" : flase
+
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -7,12 +7,11 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (item) => {
     setCart((prev) => {
-      const existed = prev.find((cartItem) => cartItem.id === item.id);
+      const existed = prev.find((x) => x.id === item.id);
+
       if (existed) {
-        return prev.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem,
+        return prev.map((x) =>
+          x.id === item.id ? { ...x, quantity: x.quantity + 1 } : x,
         );
       } else {
         return [...prev, { ...item, quantity: 1 }];
@@ -20,13 +19,33 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const removeFromCart = (id) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
 
+  const decreaseQuantity = (id) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
+        )
+        .filter((item) => item.quantity > 0),
+    );
+  };
+
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
 
   return (
     <CartContext.Provider
       value={{
         cart,
         addToCart,
+        removeFromCart,
+        decreaseQuantity,
+        totalPrice,
       }}
     >
       {children}
