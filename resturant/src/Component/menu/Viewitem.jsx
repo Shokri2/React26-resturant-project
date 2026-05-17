@@ -1,22 +1,35 @@
-import { Box, Container, Typography, Button, Grid } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+} from "@mui/material";
+
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../../Context/CartContext";
 import Navbar from "../../Component/Navbar/Navbar";
 
 function Viewitem() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
 
   const { id, name, descraption, image, price } = location.state || {};
-  const { addToCart } = useContext(CartContext);
+
+  const [qty, setQty] = useState(1);
 
   if (!name) {
     return (
       <>
         <Navbar />
         <Container sx={{ py: 10, textAlign: "center" }}>
-          <Typography variant="h5">No item data found</Typography>
+          <Typography>No item data found</Typography>
           <Button sx={{ mt: 3 }} onClick={() => navigate("/")}>
             Go Back
           </Button>
@@ -29,119 +42,116 @@ function Viewitem() {
     <>
       <Navbar />
 
+      {/* 🔥 BACKGROUND UPDATED */}
       <Box
         sx={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #1c1c1c, #3a3a3a)",
+          background: "linear-gradient(135deg, #ece9e6, #ffffff)",
           py: 6,
         }}
       >
         <Container>
-          <Grid container spacing={5} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  position: "relative",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-                  "&:hover img": {
-                    transform: "scale(1.08)",
-                  },
-                }}
-              >
-                <Box
-                  component="img"
-                  src={image}
-                  alt={name}
-                  sx={{
-                    width: "100%",
-                    height: { xs: 300, md: 450 },
-                    objectFit: "cover",
-                    transition: "0.5s",
-                  }}
-                />
+          <Paper sx={{ p: 4, borderRadius: 5, boxShadow: 3 }}>
+            <Grid container spacing={4}>
+              {/* IMAGE */}
+              <Grid item xs={12} md={6}>
+                <Box sx={{ position: "relative" }}>
+                  <Box
+                    component="img"
+                    src={image}
+                    sx={{
+                      width: "100%",
+                      height: 280,
+                      objectFit: "cover",
+                      borderRadius: 4,
+                    }}
+                  />
 
-                <Box
-                  sx={{
-                    position: "absolute",
-                    bottom: 0,
-                    width: "100%",
-                    p: 2,
-                    background:
-                      "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
-                  }}
+                  <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+                    {[image, image, image].map((img, i) => (
+                      <Box
+                        key={i}
+                        component="img"
+                        src={img}
+                        sx={{
+                          width: 70,
+                          height: 70,
+                          objectFit: "cover",
+                          borderRadius: 2,
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+              </Grid>
+
+              {/* CONTENT */}
+              <Grid item xs={12} md={6}>
+                <Typography variant="h4" fontWeight="bold">
+                  {name}
+                </Typography>
+
+                <Typography
+                  variant="h4"
+                  sx={{ mt: 2, color: "#ff6f00", fontWeight: "bold" }}
                 >
-                  <Typography variant="h6" sx={{ color: "#fff" }}>
-                    Delicious Meal
-                  </Typography>
+                  {price}$
+                </Typography>
+
+                <Box sx={{ mt: 2 }}>
+                  <Typography>Preparation Time: 20 - 30 min</Typography>
+                  <Typography>Category: Fast Food</Typography>
                 </Box>
 
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 15,
-                    left: 15,
-                    backgroundColor: "#ff9800",
-                    color: "#fff",
-                    px: 2,
-                    py: 0.5,
-                    borderRadius: "20px",
-                    fontSize: "14px",
-                  }}
-                >
-                  Best Seller
+                <Typography sx={{ mt: 2, color: "text.secondary" }}>
+                  {descraption}
+                </Typography>
+
+                <Box sx={{ mt: 3 }}>
+                  <Typography fontWeight="bold">Ingredients:</Typography>
+                  <Typography>- Chicken</Typography>
+                  <Typography>- Cheese</Typography>
+                  <Typography>- Special Sauce</Typography>
                 </Box>
-              </Box>
-            </Grid>
 
-            <Grid item xs={12} md={6}>
-              <Typography variant="h3" fontWeight="bold" color="#fff">
-                {name}
-              </Typography>
-
-              <Typography sx={{ mt: 2, color: "#ccc", fontSize: "18px" }}>
-                {descraption}
-              </Typography>
-
-              <Typography
-                variant="h4"
-                sx={{ mt: 3, color: "#ff9800", fontWeight: "bold" }}
-              >
-                {price}$
-              </Typography>
-
-              
-
-              <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    backgroundColor: "#ff9800",
-                    "&:hover": { backgroundColor: "#e68900" },
-                    borderRadius: "30px",
-                    px: 4,
-                  }}
-                  onClick={() => {
-                    addToCart({ id, name, image, price });
-                    alert("Order added 🛒");
-                  }}
+                {/* QTY */}
+                <Box
+                  sx={{ mt: 3, display: "flex", alignItems: "center", gap: 2 }}
                 >
-                  Order Now
-                </Button>
+                  <Typography>Quantity:</Typography>
+                  <TextField
+                    size="small"
+                    type="number"
+                    value={qty}
+                    onChange={(e) => setQty(Number(e.target.value))}
+                    sx={{ width: 80 }}
+                  />
+                </Box>
 
-                <Button
-                  variant="outlined"
-                  size="large"
-                  sx={{ color: "#fff", borderColor: "#fff" }}
-                  onClick={() => navigate("/")}
-                >
-                  Back Home
-                </Button>
-              </Box>
+                {/* BUTTONS */}
+                <Box sx={{ mt: 4, display: "flex", gap: 2, flexWrap: "wrap" }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<ShoppingCartIcon />}
+                    sx={{
+                      backgroundColor: "#ff6f00",
+                      borderRadius: "30px",
+                      px: 3,
+                      "&:hover": { backgroundColor: "#e65c00" },
+                    }}
+                    onClick={() => {
+                      addToCart({ id, name, image, price, qty });
+                      alert("Added to cart 🛒");
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+
+                  <Button onClick={() => navigate("/")}>Back</Button>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
+          </Paper>
         </Container>
       </Box>
     </>

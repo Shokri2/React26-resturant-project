@@ -67,7 +67,7 @@ export const UserProvider = ({ children }) => {
     toast.success("Login successful");
 
     if (existUser.role === "user") {
-      navigate("/user/dashboard");
+      navigate("/");
     } else {
       navigate("/admin/dashboard");
     }

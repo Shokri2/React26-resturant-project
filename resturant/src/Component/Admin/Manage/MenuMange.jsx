@@ -1,7 +1,6 @@
 import {
   Avatar,
   Button,
-  ButtonBase,
   Container,
   Paper,
   Stack,
@@ -14,14 +13,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Navbar from "../../Navbar/Navbar";
 
 function MenuManage() {
   const [pizzaMenu, setPizzaMenu] = useState([
     {
-      id: 1, //unique value
+      id: 1,
       name: "Margherita",
       description: "Classic pizza with fresh mozzarella, tomatoes, and basil.",
       image: "./src/assets/pizza1.jpg",
@@ -36,49 +35,22 @@ function MenuManage() {
       price: 10.99,
       quantity: 10,
     },
-    {
-      id: 3,
-      name: "Hawaiian",
-      description: "Ham and pineapple topping for a sweet and savory flavor.",
-      image: "./src/assets/pizza3.jpg",
-      price: 10.99,
-      quantity: 10,
-    },
-    {
-      id: 4,
-      name: "Vegetarian",
-      description:
-        "Assorted vegetables including mushrooms, onions, peppers, and olives.",
-      image: "./src/assets/pizza1.jpg",
-      price: 10.99,
-      quantity: 10,
-    },
-    {
-      id: 5,
-      name: "Meat Lovers",
-      description:
-        "Pepperoni, sausage, ham, and bacon for a hearty meaty experience.",
-      image: "./src/assets/pizza2.jpg",
-      price: 10.99,
-      quantity: 10,
-    },
   ]);
-  const [editeId, setEditdId] = useState(null);
-  const [UpdateIteam, setUpdateIteam] = useState();
-  const [OpenEditor, setOpenEditor] = useState(false);
-  const handleUpdate = (id) => {
-    setOpenEditor(!OpenEditor);
-    setEditdId(id);
-  };
-  const [newItem, setNewItem] = useState({});
-  console.log(newItem);
-  const [open, setOpen] = useState(false);
-  // !true
-  // !false
-  const handleAddItem = () => {
-    setOpen(!open);
-  };
 
+  const [editeId, setEditId] = useState(null);
+
+  const [updateItem, setUpdateItem] = useState({
+    name: "",
+    image: "",
+    description: "",
+    price: "",
+    quantity: "",
+  });
+
+  const [open, setOpen] = useState(false);
+  const [newItem, setNewItem] = useState({});
+
+  // ➕ ADD ITEM
   const handleSave = () => {
     if (
       !newItem.name ||
@@ -90,261 +62,271 @@ function MenuManage() {
       toast.error("Please fill all fields");
       return;
     }
-    pizzaMenu.push({ id: pizzaMenu.length + 1, ...newItem });
-    toast.success("Added Succeefllt");
-    setOpen(!open);
+
+    setPizzaMenu([...pizzaMenu, { id: pizzaMenu.length + 1, ...newItem }]);
+
+    toast.success("Added successfully");
     setNewItem({});
+    setOpen(false);
   };
 
+  // 🗑 DELETE
   const handleDelete = (id) => {
-    const newMenu = pizzaMenu.filter((piiza) => piiza.id !== id);
-    setPizzaMenu(newMenu);
-    toast.success("Deleted Successfully");
+    setPizzaMenu(pizzaMenu.filter((item) => item.id !== id));
+    toast.success("Deleted successfully");
   };
-  const hadleSaveUpdate = () => {
+
+  // ✏️ OPEN EDIT
+  const handleUpdate = (pizza) => {
+    setEditId(pizza.id);
+    setUpdateItem(pizza); // مهم جداً
+  };
+
+  // 💾 SAVE UPDATE
+  const handleSaveUpdate = () => {
     if (
-      !newItem.name ||
-      !newItem.image ||
-      !newItem.description ||
-      !newItem.price ||
-      !newItem.quantity
+      !updateItem.name ||
+      !updateItem.image ||
+      !updateItem.description ||
+      !updateItem.price ||
+      !updateItem.quantity
     ) {
       toast.error("Please fill all fields");
       return;
     }
-    if (editeId) {
-      const UpdateMenue = pizzaMenu.map((pizza) => {
-        pizza.id === editeId ? { ...pizza, newItem } : pizza;
-      });
-      setPizzaMenu(UpdateMenue);
-      toast.success(" updated successfuly");
-    }
-    setOpenEditor(!open);
-    setNewItem({});
+
+    const updatedMenu = pizzaMenu.map((pizza) =>
+      pizza.id === editeId ? { ...pizza, ...updateItem } : pizza,
+    );
+
+    setPizzaMenu(updatedMenu);
+
+    toast.success("Updated successfully");
+
+    setEditId(null);
+    setUpdateItem({
+      name: "",
+      image: "",
+      description: "",
+      price: "",
+      quantity: "",
+    });
   };
+
   return (
-    <>
-     
-      <Container>
-        <Typography
-          variant="h3"
-          sx={{
-            m: 4,
-            fontWeight: "bold",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          Manage Menu
-        </Typography>
-        <Button
-          textAlign="center"
-          variant="contained"
-          size="small"
-          color="warning"
-          onClick={handleAddItem}
-        >
-          {open ? "Cancel" : "Add New"}
-        </Button>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Image</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {pizzaMenu.map((pizza) => {
-                return (
-                  <TableRow key={pizza.id}>
-                    <TableCell>{pizza.id}</TableCell>
-                    {
-                      <TableCell>
-                        {editeId === pizza.id ? (
-                          <>
-                            <TextField
-                              value={UpdateIteam.image}
-                              onChange={(e) =>
-                                setUpdateIteam({
-                                  ...UpdateIteam,
-                                  image: e.target.value,
-                                })
-                              }
-                            />
-                          </>
-                        ) : (
-                          <Avatar
-                            variant="rounded"
-                            src={pizza.image}
-                            sx={{ width: 50, height: 50 }}
-                          />
-                        )}
-                      </TableCell>
-                    }
-                    <TableCell>
-                      {editeId === pizza.id ? (
-                        <TextField
-                          value={UpdateIteam.name}
-                          onChange={(e) =>
-                            setUpdateIteam({
-                              ...UpdateIteam,
-                              name: e.target.value,
-                            })
-                          }
-                        />
-                      ) : (
-                        pizza.name
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {editeId === pizza.id ? (
-                        <TextField
-                          value={UpdateIteam.description}
-                          onChange={(e) =>
-                            setUpdateIteam({
-                              ...UpdateIteam,
-                              description: e.target.value,
-                            })
-                          }
-                        />
-                      ) : (
-                        pizza.description
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {editeId === pizza.id ? (
-                        <TextField
-                          value={UpdateIteam.price}
-                          onChange={(e) =>
-                            setUpdateIteam({
-                              ...UpdateIteam,
-                              price: e.target.value,
-                            })
-                          }
-                        />
-                      ) : (
-                        pizza.price
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {editeId === pizza.id ? (
-                        <TextField
-                          value={UpdateIteam.quantity}
-                          onChange={(e) =>
-                            setUpdateIteam({
-                              ...UpdateIteam,
-                              quantity: e.target.value,
-                            })
-                          }
-                        />
-                      ) : (
-                        pizza.quantity
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {editeId === pizza.id ? (
-                        <Button onClick={hadleSaveUpdate}>Save</Button>
-                      ) : (
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          justifyContent="center"
-                        >
-                          <Button
-                            variant="contained"
-                            size="small"
-                            onClick={() => handleUpdate(pizza.id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="error"
-                            onClick={() => handleDelete(pizza.id)}
-                          >
-                            Delete
-                          </Button>
-                        </Stack>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              {open && (
-                <TableRow>
-                  <TableCell>{pizzaMenu.length + 1}</TableCell>
-                  <TableCell>
+    <Container>
+      <Typography variant="h3" sx={{ m: 4, textAlign: "center" }}>
+        Manage Menu
+      </Typography>
+
+      <Button
+        variant="contained"
+        color="warning"
+        onClick={() => setOpen(!open)}
+      >
+        {open ? "Cancel" : "Add New"}
+      </Button>
+
+      <TableContainer component={Paper} sx={{ mt: 3 }}>
+        <Table>
+          {/* HEADER */}
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Image</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Quantity</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {/* DATA */}
+            {pizzaMenu.map((pizza) => (
+              <TableRow key={pizza.id}>
+                <TableCell>{pizza.id}</TableCell>
+
+                {/* IMAGE */}
+                <TableCell>
+                  {editeId === pizza.id ? (
                     <TextField
-                      label="Image"
-                      value={newItem.image}
+                      value={updateItem.image}
                       onChange={(e) =>
-                        setNewItem({ ...newItem, image: e.target.value })
+                        setUpdateItem({
+                          ...updateItem,
+                          image: e.target.value,
+                        })
                       }
                     />
-                  </TableCell>
-                  <TableCell>
+                  ) : (
+                    <Avatar
+                      src={pizza.image}
+                      variant="rounded"
+                      sx={{ width: 50, height: 50 }}
+                    />
+                  )}
+                </TableCell>
+
+                {/* NAME */}
+                <TableCell>
+                  {editeId === pizza.id ? (
                     <TextField
-                      label="Name"
-                      value={newItem.name}
+                      value={updateItem.name}
                       onChange={(e) =>
-                        setNewItem({ ...newItem, name: e.target.value })
+                        setUpdateItem({
+                          ...updateItem,
+                          name: e.target.value,
+                        })
                       }
                     />
-                  </TableCell>
-                  <TableCell>
+                  ) : (
+                    pizza.name
+                  )}
+                </TableCell>
+
+                {/* DESCRIPTION */}
+                <TableCell>
+                  {editeId === pizza.id ? (
                     <TextField
-                      label="Description"
-                      value={newItem.description}
+                      value={updateItem.description}
                       onChange={(e) =>
-                        setNewItem({ ...newItem, description: e.target.value })
+                        setUpdateItem({
+                          ...updateItem,
+                          description: e.target.value,
+                        })
                       }
                     />
-                  </TableCell>
-                  <TableCell>
+                  ) : (
+                    pizza.description
+                  )}
+                </TableCell>
+
+                {/* PRICE */}
+                <TableCell>
+                  {editeId === pizza.id ? (
                     <TextField
-                      label="Price"
-                      type="number"
-                      value={newItem.price}
+                      value={updateItem.price}
                       onChange={(e) =>
-                        setNewItem({ ...newItem, price: e.target.value })
+                        setUpdateItem({
+                          ...updateItem,
+                          price: e.target.value,
+                        })
                       }
                     />
-                  </TableCell>
-                  <TableCell>
+                  ) : (
+                    pizza.price
+                  )}
+                </TableCell>
+
+                {/* QUANTITY */}
+                <TableCell>
+                  {editeId === pizza.id ? (
                     <TextField
-                      label="Quantity"
-                      type="number"
-                      value={newItem.quantity}
+                      value={updateItem.quantity}
                       onChange={(e) =>
-                        setNewItem({ ...newItem, quantity: e.target.value })
+                        setUpdateItem({
+                          ...updateItem,
+                          quantity: e.target.value,
+                        })
                       }
                     />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Stack direction="row" spacing={1} justifyContent="center">
+                  ) : (
+                    pizza.quantity
+                  )}
+                </TableCell>
+
+                {/* ACTIONS */}
+                <TableCell>
+                  {editeId === pizza.id ? (
+                    <Button onClick={handleSaveUpdate} variant="contained">
+                      Save
+                    </Button>
+                  ) : (
+                    <Stack direction="row" spacing={1}>
                       <Button
                         variant="contained"
-                        size="small"
-                        onClick={handleSave}
+                        onClick={() => handleUpdate(pizza)}
                       >
-                        Save
+                        Edit
+                      </Button>
+
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDelete(pizza.id)}
+                      >
+                        Delete
                       </Button>
                     </Stack>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
-    </>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {/* ADD NEW ROW */}
+            {open && (
+              <TableRow>
+                <TableCell>#</TableCell>
+
+                <TableCell>
+                  <TextField
+                    value={newItem.image || ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, image: e.target.value })
+                    }
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <TextField
+                    value={newItem.name || ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, name: e.target.value })
+                    }
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <TextField
+                    value={newItem.description || ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, description: e.target.value })
+                    }
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <TextField
+                    value={newItem.price || ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, price: e.target.value })
+                    }
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <TextField
+                    value={newItem.quantity || ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, quantity: e.target.value })
+                    }
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <Button variant="contained" onClick={handleSave}>
+                    Save
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 }
+
 export default MenuManage;

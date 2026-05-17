@@ -8,132 +8,148 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  IconButton,
+  Drawer,
+  useMediaQuery,
 } from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme } from "@mui/material/styles";
+
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import PeopleIcon from "@mui/icons-material/People";
-import WorkIcon from "@mui/icons-material/Work";
-import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import MessageIcon from "@mui/icons-material/Message";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-function Sidebar({ open, toggleSideBar }) {
-  const { user } = useContext(UserContext);
+function Sidebar({ open, toggleSideBar, setSelectedPage }){
+  const { user, logout } = useContext(UserContext);
+
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const role = user?.role;
+
+  if (role !== "admin") {
+    return null;
+  }
 
   const menuItemStyle = {
     borderRadius: 2,
     mb: 1,
+
     "&:hover": {
       backgroundColor: "#ffffff22",
     },
   };
 
-  return (
+  const sidebarContent = (
     <Box
       sx={{
-        width: open ? 220 : 80,
-        transition: "0.3s",
+        width: 240,
+
         p: 2,
+
         bgcolor: "#1e1e2f",
+
         color: "#fff",
+
         minHeight: "100vh",
       }}
     >
-      <IconButton
-        onClick={toggleSideBar}
+      <Typography
         sx={{
-          color: "#fff",
-          mb: 2,
-          backgroundColor: "#ffffff22",
-          "&:hover": { backgroundColor: "#ffffff33" },
+          mb: 4,
+
+          fontWeight: "bold",
+
+          fontSize: "1.3rem",
+
+          textAlign: "center",
         }}
       >
-        <MenuIcon />
-      </IconButton>
+        Admin Panel
+      </Typography>
 
-      {open && (
-        <Typography sx={{ mb: 3, fontWeight: "bold" }}>
-          Hello, {user?.name}
-        </Typography>
-      )}
+      <Typography
+        sx={{
+          mb: 3,
+
+          fontWeight: "bold",
+
+          fontSize: "1rem",
+        }}
+      >
+        Hello, {user?.name}
+      </Typography>
 
       <List>
         <ListItemButton sx={menuItemStyle}>
           <ListItemIcon sx={{ color: "#fff" }}>
             <DashboardIcon />
           </ListItemIcon>
-          {open && <ListItemText primary="Dashboard" />}
+
+          <ListItemText primary="Dashboard" />
         </ListItemButton>
-
-        {role === "admin" && (
-          <>
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <RestaurantMenuIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Menu" />}
-            </ListItemButton>
-
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <PeopleIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Users" />}
-            </ListItemButton>
-
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <WorkIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Employee" />}
-            </ListItemButton>
-          </>
-        )}
-
-        {role === "user" && (
-          <>
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <RestaurantMenuIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Menu" />}
-            </ListItemButton>
-
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <PersonIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Profile" />}
-            </ListItemButton>
-
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <ShoppingCartIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Cart" />}
-            </ListItemButton>
-
-            <ListItemButton sx={menuItemStyle}>
-              <ListItemIcon sx={{ color: "#fff" }}>
-                <MessageIcon />
-              </ListItemIcon>
-              {open && <ListItemText primary="Messages" />}
-            </ListItemButton>
-          </>
-        )}
 
         <ListItemButton sx={menuItemStyle}>
           <ListItemIcon sx={{ color: "#fff" }}>
+            <RestaurantMenuIcon />
+          </ListItemIcon>
+
+          <ListItemText primary="Menu Manage" />
+        </ListItemButton>
+
+        <ListItemButton sx={menuItemStyle}>
+          <ListItemIcon sx={{ color: "#fff" }}>
+            <PeopleIcon />
+          </ListItemIcon>
+
+          <ListItemText primary="Users" />
+        </ListItemButton>
+
+        <ListItemButton sx={menuItemStyle}>
+          <ListItemIcon sx={{ color: "#fff" }}>
+            <FeedbackIcon />
+          </ListItemIcon>
+
+          <ListItemText primary="Feedbacks" />
+        </ListItemButton>
+
+        <ListItemButton onClick={logout} sx={menuItemStyle}>
+          <ListItemIcon sx={{ color: "#fff" }}>
             <LogoutIcon />
           </ListItemIcon>
-          {open && <ListItemText primary="Logout" />}
+
+          <ListItemText primary="Logout" />
         </ListItemButton>
       </List>
+    </Box>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={toggleSideBar}
+        variant="temporary"
+      >
+        {sidebarContent}
+      </Drawer>
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        width: open ? 240 : 0,
+
+        overflow: "hidden",
+
+        transition: "0.3s",
+      }}
+    >
+      {sidebarContent}
     </Box>
   );
 }
