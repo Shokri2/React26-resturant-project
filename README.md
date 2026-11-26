@@ -2,6 +2,8 @@
 
 A restaurant website built with React 19 and Material UI. Visitors can browse the menu, add dishes to a cart, place orders, book a table and contact the restaurant. Admins get their own dashboard to manage the menu.
 
+![Restaurant website home page](docs/restaurant-home.avif)
+
 ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 ![MUI](https://img.shields.io/badge/Material_UI-007FFF?logo=mui&logoColor=white)
