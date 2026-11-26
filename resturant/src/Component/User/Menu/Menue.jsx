@@ -1,4 +1,4 @@
-import MenueList from "../../Menu/Menuelist.jsx";
+import MenueList from "../../menu/Menuelist.jsx";
 
 function Menu() {
   return (
