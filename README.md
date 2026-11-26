@@ -1,4 +1,4 @@
-# 🍽️ Restaurant Website (React)
+# Restaurant Website (React)
 
 A restaurant website built with React 19 and Material UI. Visitors can browse the menu, add dishes to a cart, place orders, book a table and contact the restaurant. Admins get their own dashboard to manage the menu.
 
