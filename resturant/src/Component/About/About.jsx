@@ -1,4 +1,6 @@
 import "./About.css";
+import kitchenImg from "../../assets/ourstory-kitchin.jpeg";
+import outsideImg from "../../assets/ourstory-outside.jpeg";
 import { Container, Typography, Box } from "@mui/material";
 
 function About() {
@@ -44,7 +46,7 @@ function About() {
       >
         <Box
           component="img"
-          src="/src/assets/ourstory-kitchin.jpeg"
+          src={kitchenImg}
           alt="Kitchen"
           sx={{
             width: "400px",
@@ -55,7 +57,7 @@ function About() {
 
         <Box
           component="img"
-          src="/src/assets/ourstory-outside.jpeg"
+          src={outsideImg}
           alt="Outside"
           sx={{
             width: "400px",
