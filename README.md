@@ -2,6 +2,8 @@
 
 A restaurant website built with React 19 and Material UI. Visitors can browse the menu, add dishes to a cart, place orders, book a table and contact the restaurant. Admins get their own dashboard to manage the menu.
 
+**Live demo:** https://shokri-restaurant.onrender.com
+
 ![Restaurant website home page](docs/restaurant-home.avif)
 
 ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
